@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../utils/color_util.dart';
 
 class BannerDisplay extends StatefulWidget {
-
   @override
   _BannerDisplayState createState() => _BannerDisplayState();
 }
@@ -15,7 +14,12 @@ class _BannerDisplayState extends State<BannerDisplay> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: white,
-          leading: Icon(Icons.close, color: black),
+          leading: IconButton(
+            icon: Icon(Icons.close, color: black),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
           title: Text(
             'Banners',
             style: TextStyle(color: black),

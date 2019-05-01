@@ -74,7 +74,12 @@ class _AddProductState extends State<AddProduct> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: white,
-        leading: Icon(Icons.close, color: black),
+        leading: IconButton(
+          icon: Icon(Icons.close, color: black),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         title: Text(
           "Add Products",
           style: TextStyle(color: black),
@@ -271,21 +276,27 @@ class _AddProductState extends State<AddProduct> {
       else {
         var id = Uuid();
         String productId = id.v1();
-        var imageName = productId+'.jpeg';
-        _storageReference = FirebaseStorage.instance.ref().child('$_currentCategory/$imageName');
+        var imageName = productId + '.jpeg';
+        _storageReference = FirebaseStorage.instance
+            .ref()
+            .child('$_currentCategory/$imageName');
         StorageUploadTask putFile = _storageReference.putFile(_image);
         Fluttertoast.showToast(msg: "Uploading Image.");
         await putFile.onComplete.whenComplete(() async {
           _firestore.collection('products').document(productId).setData({
+            'id': productId,
             "name": productNameController.text,
             "category": _currentCategory,
             "quantity": quantityNameController.text,
             "costPrice": costPriceNameController.text,
             "discount": discountNameController.text,
             "image": await _storageReference.getDownloadURL(),
-          }).whenComplete((){
+          }).whenComplete(() {
             Fluttertoast.showToast(msg: "Product Added.");
-            Navigator.pop(context);
+            setState(() {
+              _image = null;
+              _formKey.currentState.reset();
+            });
           });
         });
       }

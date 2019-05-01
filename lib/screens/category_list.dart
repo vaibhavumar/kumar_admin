@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../utils/color_util.dart';
 
 class CategoryDisplay extends StatefulWidget {
-
   @override
   _CategoryDisplayState createState() => _CategoryDisplayState();
 }
@@ -15,7 +14,12 @@ class _CategoryDisplayState extends State<CategoryDisplay> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: white,
-          leading: Icon(Icons.close, color: black),
+          leading: IconButton(
+            icon: Icon(Icons.close, color: black),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
           title: Text(
             'Categories',
             style: TextStyle(color: black),
